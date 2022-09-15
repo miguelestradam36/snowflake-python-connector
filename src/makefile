@@ -9,17 +9,18 @@ APP_PATH = ${current_dir}/src/main.py
 # Commands
 ##############################################################################################
 
-.PHONY: create-venv 
-create-venv: ## Create pyvenv
-	@echo Builiding Python Virtual Environment...
-	@python -m venv app\venv
+.PHONY: installations
+installations: ## Local needed installations
+	@echo Installing needed modules...
+	@echo.
+	@python -m pip install -r src/config/requirements.txt
 	@echo.
 
-.PHONY: activate-venv
-activate-venv: ## Activate pyvenv
+.PHONY: snowflake-upload
+snowflake-upload: ## Execute basic sql script into snowflake cloud db
 	@echo Activating Python Virtual Environment...
-	@app\venv\Scripts\activate.bat
 	@echo.
+	@python ${APP_PATH}
 
 
 ##############################################################################################
