@@ -13,7 +13,7 @@ class SnowflakeConnector():
         import os
         location = os.path.join(os.path.dirname(__file__), 'config/requirements.txt')
         
-    def credentials_log_in(self, username:str):
+    def credentials_log_in(self, username:str, hostname:str, account:str, warh:str, dbname:str, schema:str)->None:
         """
         Setter method, which can be compared to: 
             pip install -r requirements.txt
@@ -21,7 +21,15 @@ class SnowflakeConnector():
         param -> file_path: Location of requirements.txt file
         param -> file_path: string      
         """
-        pass
+        import snowflake.connector
+        ctx = snowflake.connector.connect(
+            user="<username>",
+            host="<hostname>",
+            account="<account_identifier>",
+            warehouse="test_warehouse",
+            database="test_db",
+            schema="test_schema"
+        )
     @property
     def con_cursor(self):
         """
