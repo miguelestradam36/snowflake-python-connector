@@ -28,4 +28,4 @@ snowflake-upload: ## Execute basic sql script into snowflake cloud db
 ##############################################################################################
 
 .PHONY: build
-build-venv: installations snowflake-upload
+build: installations snowflake-upload
