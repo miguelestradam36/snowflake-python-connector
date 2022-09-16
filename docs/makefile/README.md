@@ -1,11 +1,3 @@
-# Python Quick Demonstration (Windows operating system)
-
-#### The following project is under development
-
-Python scripts development using Python Virtual Environment.
-
-Automatic VirtualEnv and Dockerfile setup through scripts and `make`  commands
-
 ## Needed installs
 
 ### Before starting...
@@ -36,31 +28,3 @@ For more information about this package manager, please direct to: https://www.g
 ```bash
 chocho install make
 ```
-
-## How to use ?
-
-#### Build Environment
-
-For a first use, to automatically create the Python virtual Environment with all its functionalities, execute the command:
-
-```bash
-make build-venv
-```
-
-![make build-venv demonstration](docs/Images/build-venv.png "Example")
-
-## Documentation 
-To be directed to the docs main readme
-- Press the following link: [Docs](docs/)
-
-#### For more specific information:
-
-- AWS: [further documentation](docs/AWS.md)
-- Azure: [further documentation](docs/Azure.md)
-- Snowflake: [further documentation](docs/Snowflake.md)
-- Python: [further documentation](docs/Python.md)
-- Makefile: [further documentation](docs/Makefile.md)
-
-#### Author:
-
-- Miguel Estrada: miguelestradam36@gmail.com
