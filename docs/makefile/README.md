@@ -1,3 +1,5 @@
+# Makefile Documentation
+
 ## Needed installs
 
 ### Before starting...
@@ -5,6 +7,8 @@
 Verify python is installed into your computer and added to the **PATH**
 
 The recommended approach in this case would be to download python manually if it is not installed in the computer.
+
+![Snowflake logo](../img/gnu-make.webp)
 
 For this task, direct to the link: https://www.python.org/downloads/
 

@@ -1,3 +1,5 @@
+# Snowflake Documentation
+
 ## Needed installs
 
 ### Before starting...
@@ -5,6 +7,8 @@
 Verify python is installed into your computer and added to the **PATH**
 
 The recommended approach in this case would be to download python manually if it is not installed in the computer.
+
+![Snowflake logo](../img/logo.jpg)
 
 For this task, direct to the link: https://www.python.org/downloads/
 
@@ -17,14 +21,4 @@ Install Chocolatey into your computer:
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
-For more information about this package manager, please direct to: https://www.github.com/miguelestradam36/chocolatey-for-windows 
-
-### Second Step
-
-**NOTE:** Once Chocolatey has been installed.
-1. In the same window/session
-2. Execute the following commands:
-
-```bash
-chocho install make
-```
+For more information about this package manager
