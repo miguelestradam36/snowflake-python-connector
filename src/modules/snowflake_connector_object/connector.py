@@ -6,33 +6,40 @@ class SnowflakeConnector():
     database = ''
     schema = ''
     def credentials_log_in(self)->None:
-        import snowflake.connector
-        print("Connecting to Snowflake")
-        self.conn = snowflake.connector.connect(
-            user=self.username,
-            password=self.password,
-            account=self.account_id,
-            warehouse=self.warehouse,
-        )
+        try:
+            import snowflake.connector
+            print("Connecting to Snowflake")
+            self.conn = snowflake.connector.connect(
+                user=self.username,
+                password=self.password,
+                account=self.account_id,
+                warehouse=self.warehouse,
+                database=self.database,
+                schema=self.schema,
+            )
+        except snowflake.connector.errors.ProgrammingError as e:
+            # default error message
+            print("SNOWFLAKE CONNECTION ERROR: {}".format(e))
+        except snowflake.connector.errors.DatabaseError as e:
+            if db_ex.errno == 250001:
+                print(f"Invalid username/password, please re-enter username and password...")
+                # code for user to re-enter username & pass
+            else:
+                print("ERROR: {}".format(e))
+        except Exception as error:
+            print("ERROR: {}".format(error))
 
-        self.cursor = self.conn.cursor()
-
-    @property
-    def execute_query(self):
-        return self.cursor.fetchall()
-
-    @execute_query.setter
     def execute_query(self, query:str)->None:
         try:
-            self.cursor().execute(query)
+            print("Querying sql...")
+            self.conn.cursor.execute(query)
+            rows = self.conn.cursor.fetch_pandas_all()
+            print(rows)
         except Exception as error:
             self.conn.rollback()
 
     def read_file_values(self, filepath:str)->None:
         import yaml
-        import boto3
-        import yaml
-        from yaml.loader import SafeLoader
         with open(filepath, 'r') as f:
             print("Reading credentials...")
             yaml_config = yaml.safe_load(f)

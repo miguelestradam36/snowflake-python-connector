@@ -1,3 +1,4 @@
 pyyaml
 pandas
 snowflake-connector-python[pandas]
+SQLAlchemy
