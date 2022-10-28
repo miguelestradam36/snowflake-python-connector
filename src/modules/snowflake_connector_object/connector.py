@@ -5,7 +5,20 @@ class SnowflakeConnector():
     warehouse = ''
     database = ''
     schema = ''
-    def credentials_log_in(self)->None:
+    def credentials_log_in(self, filepath:str)->None:
+        try:
+            import yaml
+            with open(filepath, 'r') as f:
+                print("Reading credentials...")
+                yaml_config = yaml.safe_load(f)
+                self.username = yaml_config["defaults"]["snowflake"]["username"]
+                self.password = yaml_config["defaults"]["snowflake"]["password"]
+                self.warehouse = yaml_config["defaults"]["snowflake"]["warehouse"]
+                self.database = yaml_config["defaults"]["snowflake"]["database"]
+                self.schema = yaml_config["defaults"]["snowflake"]["schema"]
+                self.account_id = yaml_config["defaults"]["snowflake"]["account_id"]
+        except Exception as error:
+            print("ERROR: {}".format(error))
         try:
             import snowflake.connector
             print("Connecting to Snowflake")
@@ -29,23 +42,16 @@ class SnowflakeConnector():
         except Exception as error:
             print("ERROR: {}".format(error))
 
-    def execute_query(self, query:str)->None:
+    def execute_query(self, query:str, once:bool=True)->list:
         try:
             print("Querying sql...")
-            self.conn.cursor.execute(query)
-            rows = self.conn.cursor.fetchall()
-            print(rows)
+            engine_results = self.conn.cursor().execute(query)
+            rows = engine_results.fetchall()
+            return rows
         except Exception as error:
+            print("ERROR: {}".format(error))
             self.conn.rollback()
-
-    def read_file_values(self, filepath:str)->None:
-        import yaml
-        with open(filepath, 'r') as f:
-            print("Reading credentials...")
-            yaml_config = yaml.safe_load(f)
-            self.username = yaml_config["defaults"]["snowflake"]["username"]
-            self.password = yaml_config["defaults"]["snowflake"]["password"]
-            self.warehouse = yaml_config["defaults"]["snowflake"]["warehouse"]
-            self.database = yaml_config["defaults"]["snowflake"]["database"]
-            self.schema = yaml_config["defaults"]["snowflake"]["schema"]
-            self.account_id = yaml_config["defaults"]["snowflake"]["account_id"]
+        finally:
+            if once:
+                print("Closing connection...")
+                self.conn.close()
