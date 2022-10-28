@@ -33,7 +33,7 @@ class SnowflakeConnector():
         try:
             print("Querying sql...")
             self.conn.cursor.execute(query)
-            rows = self.conn.cursor.fetch_pandas_all()
+            rows = self.conn.cursor.fetchall()
             print(rows)
         except Exception as error:
             self.conn.rollback()

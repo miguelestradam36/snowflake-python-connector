@@ -10,6 +10,6 @@ if __name__ == "__main__":
     buff.credentials_log_in()
     filename_2 = r"C:\Users\migue\Projects\snowflake\snowflake-python-connector\src\sql\scripts\snowflake_tutorial.sql"
     with open (filename_2, "r") as file:
-        query = file.read()
+        query = file.read().replace('\n', '')
     data = buff.execute_query(query)
     print(data)

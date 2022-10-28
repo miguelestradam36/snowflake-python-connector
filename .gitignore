@@ -1,4 +1,7 @@
 src/config/credentials.yaml
 src/config/
 src/config
+.__pycache__/
+__pycache__/
+*__pycache__/
 !src/config/requirements.txt
