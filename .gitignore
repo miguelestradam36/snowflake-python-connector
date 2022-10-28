@@ -1,0 +1,4 @@
+src/config/credentials.yaml
+src/config/
+src/config
+!src/config/requirements.txt

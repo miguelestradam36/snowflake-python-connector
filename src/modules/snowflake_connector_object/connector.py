@@ -1,42 +1,44 @@
 class SnowflakeConnector():
     username = ''
-    hostname = ''
-    account = ''
+    password = ''
+    account_id = ''
     warehouse = ''
     database = ''
     schema = ''
-        
-    def credentials_log_in(self, username:str, hostname:str, account:str, warh:str, dbname:str, schema:str)->None:
-        """
-        Setter method, which can be compared to: 
-            pip install -r requirements.txt
-
-        param -> file_path: Location of requirements.txt file
-        param -> file_path: string      
-        """
+    def credentials_log_in(self)->None:
         import snowflake.connector
-        ctx = snowflake.connector.connect(
-            user="<username>",
-            host="<hostname>",
-            account="<account_identifier>",
-            warehouse="test_warehouse",
-            database="test_db",
-            schema="test_schema"
+        print("Connecting to Snowflake")
+        self.conn = snowflake.connector.connect(
+            user=self.username,
+            password=self.password,
+            account=self.account_id,
+            warehouse=self.warehouse,
         )
+
+        self.cursor = self.conn.cursor()
+
     @property
-    def con_cursor(self):
-        """
-        Getter method, which is used to define the config file path.
-        """
-        return self.requirements_location_
+    def execute_query(self):
+        return self.cursor.fetchall()
 
-    @con_cursor.setter
-    def con_cursor(self, renewal:bool=False)->None:
-        """
-        Setter method, which can be compared to: 
-            pip install -r requirements.txt
+    @execute_query.setter
+    def execute_query(self, query:str)->None:
+        try:
+            self.cursor().execute(query)
+        except Exception as error:
+            self.conn.rollback()
 
-        param -> file_path: Location of requirements.txt file
-        param -> file_path: string      
-        """
-        print('Checking system...')
+    def read_file_values(self, filepath:str)->None:
+        import yaml
+        import boto3
+        import yaml
+        from yaml.loader import SafeLoader
+        with open(filepath, 'r') as f:
+            print("Reading credentials...")
+            yaml_config = yaml.safe_load(f)
+            self.username = yaml_config["defaults"]["snowflake"]["username"]
+            self.password = yaml_config["defaults"]["snowflake"]["password"]
+            self.warehouse = yaml_config["defaults"]["snowflake"]["warehouse"]
+            self.database = yaml_config["defaults"]["snowflake"]["database"]
+            self.schema = yaml_config["defaults"]["snowflake"]["schema"]
+            self.account_id = yaml_config["defaults"]["snowflake"]["account_id"]
