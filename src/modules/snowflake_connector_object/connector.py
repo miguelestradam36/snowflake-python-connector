@@ -46,8 +46,8 @@ class SnowflakeConnector():
         try:
             print("Querying sql...")
             engine_results = self.conn.cursor().execute(query)
-            rows = engine_results.fetchall()
-            return rows
+            self.rows = engine_results.fetchall()
+            return self.rows
         except Exception as error:
             print("ERROR: {}".format(error))
             self.conn.rollback()
@@ -55,3 +55,34 @@ class SnowflakeConnector():
             if once:
                 print("Closing connection...")
                 self.conn.close()
+            
+    def to_dataframe():
+        pass
+
+    def manual_log_in(self, user:str, password:str, account:str, warehouse:str, database:str, schema:str):
+        try:
+            import snowflake.connector
+            print("Connecting to Snowflake")
+            self.conn = snowflake.connector.connect(
+                user=user,
+                password=password,
+                account=account,
+                warehouse=warehouse,
+                database=database,
+                schema=schema,
+            )
+        except snowflake.connector.errors.ProgrammingError as e:
+            # default error message
+            print("SNOWFLAKE CONNECTION ERROR: {}".format(e))
+        except snowflake.connector.errors.DatabaseError as e:
+            if db_ex.errno == 250001:
+                print(f"Invalid username/password, please re-enter username and password...")
+                # code for user to re-enter username & pass
+            else:
+                print("ERROR: {}".format(e))
+        except Exception as error:
+            print("ERROR: {}".format(error))
+
+    def __init__(self, pandas:bool=True):
+        if pandas:
+            print("Including pandas Dataframe for ETL/ELT")
