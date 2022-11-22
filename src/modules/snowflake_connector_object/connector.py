@@ -1,11 +1,24 @@
 class SnowflakeConnector():
-    username = ''
-    password = ''
-    account_id = ''
-    warehouse = ''
-    database = ''
-    schema = ''
+    """
+    Attributes
+    ---
+    """
+    username = '' # Snowflake account username
+    password = '' # Snowflake account password
+    account_id = '' # Snowflake account id
+    warehouse = '' # Snowflake warehouse to connect to
+    database = '' # Snowflake database to connect to
+    schema = '' # Snowflake schema to connect to
+    """
+    Methods
+    ---
+    """
     def credentials_log_in(self, filepath:str)->None:
+        """
+        Class method
+        Params: filepath (string [Required])
+        Objective: Read credentials from YAML file and load into class for python-snowflake connection.
+        """
         try:
             import yaml
             with open(filepath, 'r') as f:
@@ -42,7 +55,12 @@ class SnowflakeConnector():
         except Exception as error:
             print("ERROR: {}".format(error))
 
-    def execute_query(self, query:str, once:bool=True)->list:
+    def execute_query(self, query:str, shut_connection_after:bool=True)->list:
+        """
+        Class Method
+        Params: query (string [Required]), shut_connection_after (bool [Not Required], default = True)
+        Objective: Execute query under previously stablished connection
+        """
         try:
             print("Querying sql...")
             engine_results = self.conn.cursor().execute(query)
@@ -52,14 +70,19 @@ class SnowflakeConnector():
             print("ERROR: {}".format(error))
             self.conn.rollback()
         finally:
-            if once:
+            if shut_connection_after:
                 print("Closing connection...")
                 self.conn.close()
-            
-    def to_dataframe():
-        pass
 
     def manual_log_in(self, user:str, password:str, account:str, warehouse:str, database:str, schema:str):
+        """
+        Class method
+        Params: user (string [Required]), 
+            password (string [Required]), 
+            account (string [Required]), 
+            warehouse (string [Required]), database (string [Required]), schema (string [Required])
+        Objective: Establish python-snowflake connection.
+        """
         try:
             import snowflake.connector
             print("Connecting to Snowflake")
@@ -84,5 +107,12 @@ class SnowflakeConnector():
             print("ERROR: {}".format(error))
 
     def __init__(self, pandas:bool=True):
+        """
+        Function that initializes class
+        ---
+        Params: pandas (string [Not Required], default = True)
+        Objective: Load pandas module into class as attribute, option given to avoid this.
+        """
         if pandas:
             print("Including pandas Dataframe for ETL/ELT")
+            self.pandas = __import__("pandas")
